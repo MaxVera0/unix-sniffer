@@ -9,4 +9,4 @@ int main(int argc, char *argv[])
     w.show();       // la muestra
 
     return app.exec();  // loop de Qt
-}
+} 
