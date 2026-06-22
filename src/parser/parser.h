@@ -4,8 +4,11 @@
 #include <vector>
 #include <pcap.h>
 #include <cstdint>
-#include <winsock2.h>
-
+#ifdef _WIN32
+    #include <winsock2.h>
+#else
+    #include <arpa/inet.h>
+#endif
 using namespace std;
 
 #pragma pack(push, 1)
