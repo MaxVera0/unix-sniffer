@@ -12,6 +12,17 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# 1. PRIMERO SE DEFINE EL EJECUTABLE
+# Archivos fuente 
+add_executable(chafa-sniffer
+    src/main.cpp
+    src/gui/mainwindow.cpp
+    src/gui/mainwindow.h
+    src/gui/mainwindow.ui
+    src/gui/capturawindow.h src/gui/capturawindow.cpp src/gui/capturawindow.ui
+)
+
+# 2. LUEGO SE VINCULAN LAS LIBRERÍAS AL EJECUTABLE
 # CONFIGURACIÓN MULTIPLATAFORMA (Windows vs Linux)
 # ==========================================================
 if(WIN32)
@@ -25,13 +36,3 @@ elseif(UNIX)
     # Configuración para Linux (Uaabuntu usa las librerías nativas del sistema)
     target_link_libraries(chafa-sniffer PRIVATE pcap Qt6::Widgets)
 endif()
-
-# Ejecutable
-# Archivos fuente 
-add_executable(chafa-sniffer
-    src/main.cpp
-    src/gui/mainwindow.cpp
-    src/gui/mainwindow.h
-    src/gui/mainwindow.ui
-    src/gui/capturawindow.h src/gui/capturawindow.cpp src/gui/capturawindow.ui
-)
