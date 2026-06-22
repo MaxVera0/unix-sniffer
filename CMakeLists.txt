@@ -12,9 +12,19 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Rutas de Npcap
-set(NPCAP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/libs/npcap/Include")
-set(NPCAP_LIB_DIR     "${CMAKE_SOURCE_DIR}/libs/npcap/Lib/x64")
+# CONFIGURACIÓN MULTIPLATAFORMA (Windows vs Linux)
+# ==========================================================
+if(WIN32)
+    # Configuración para Windows (Usando tu carpeta libs local)
+    target_include_directories(chafa-sniffer PRIVATE "${CMAKE_SOURCE_DIR}/libs/npcap/Include")
+    target_link_directories(chafa-sniffer PRIVATE "${CMAKE_SOURCE_DIR}/libs/npcap/Lib/x64")
+    # Nota: Aquí agregamos ws2_32 porque Windows la necesita para los sockets
+    target_link_libraries(chafa-sniffer PRIVATE wpcap Packet ws2_32 Qt6::Widgets)
+    
+elseif(UNIX)
+    # Configuración para Linux (Uaabuntu usa las librerías nativas del sistema)
+    target_link_libraries(chafa-sniffer PRIVATE pcap Qt6::Widgets)
+endif()
 
 # Ejecutable
 # Archivos fuente 
@@ -24,18 +34,4 @@ add_executable(chafa-sniffer
     src/gui/mainwindow.h
     src/gui/mainwindow.ui
     src/gui/capturawindow.h src/gui/capturawindow.cpp src/gui/capturawindow.ui
-)
-
-# Includes
-target_include_directories(chafa-sniffer PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-    ${NPCAP_INCLUDE_DIR}
-)
-
-# Librerías
-target_link_libraries(chafa-sniffer PRIVATE
-    Qt6::Widgets
-    "${NPCAP_LIB_DIR}/wpcap.lib"
-    "${NPCAP_LIB_DIR}/Packet.lib"
-    ws2_32
 )
